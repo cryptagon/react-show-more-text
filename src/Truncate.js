@@ -48,12 +48,14 @@ export default class Truncate extends React.Component {
 
         this.elements = {};
         this.replacedLinks = [];
+        this.observer = null
     }
 
     componentDidMount() {
         const {
             elements: {
-                text
+                text,
+                target
             },
             calcTargetWidth,
             onResize
@@ -69,7 +71,10 @@ export default class Truncate extends React.Component {
             }
         });
 
-        window.addEventListener('resize', onResize);
+        this.observer = new ResizeObserver((entries) => {
+          onResize()
+        })
+        this.observer.observe(target)
     }
 
     componentDidUpdate(prevProps) {
@@ -95,7 +100,7 @@ export default class Truncate extends React.Component {
 
         ellipsis.parentNode.removeChild(ellipsis);
 
-        window.removeEventListener('resize', onResize);
+        this.observer.disconnect()
 
         window.cancelAnimationFrame(timeout);
     }
