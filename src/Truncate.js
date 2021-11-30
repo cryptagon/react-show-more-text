@@ -55,7 +55,7 @@ export default class Truncate extends React.Component {
         const {
             elements: {
                 text,
-                target
+                target,
             },
             calcTargetWidth,
             onResize
@@ -74,7 +74,7 @@ export default class Truncate extends React.Component {
         this.observer = new ResizeObserver((entries) => {
           onResize()
         })
-        this.observer.observe(target)
+        this.observer.observe(target.parentNode)
     }
 
     componentDidUpdate(prevProps) {
@@ -100,7 +100,7 @@ export default class Truncate extends React.Component {
 
         ellipsis.parentNode.removeChild(ellipsis);
 
-        this.observer.disconnect()
+        this.observer?.disconnect()
 
         window.cancelAnimationFrame(timeout);
     }
